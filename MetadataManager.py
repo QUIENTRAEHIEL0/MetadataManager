@@ -36,25 +36,82 @@ def modify_metadata(file_path):
             print("5. Salir")
             choice = input("Selecciona una opción (1-5): ").strip()
         
-            if choice == '1':
-                new_time = input("Introduce la nueva fecha de creación (YYYY-MM-DD HH:MM:SS): ")
-                modify_time(file_path, new_time, 'CreationTime')
-            elif choice == '2':
-                new_time = input("Introduce la nueva fecha de modificación (YYYY-MM-DD HH:MM:SS): ")
-                modify_time(file_path, new_time, 'LastWriteTime')
-            elif choice == '3':
-                new_time = input("Introduce la nueva fecha de último acceso (YYYY-MM-DD HH:MM:SS): ")
-                modify_time(file_path, new_time, 'LastAccessTime')
-            elif choice == '4':
-                new_name = input("Introduce el nuevo nombre del archivo: ")
-                modify_name(file_path, new_name)
-                file_path = os.path.join(os.path.dirname(file_path), new_name)  # Actualiza la ruta del archivo
-            elif choice == '5':
-                break
-            else:
-                print("Opción no válida. Inténtalo de nuevo.")
+            try:
+                if choice == '1':
+                    new_time = input("Introduce la nueva fecha de creación (YYYY-MM-DD HH:MM:SS): ")
+                    modify_time(file_path, new_time, 'CreationTime')
+                elif choice == '2':
+                    new_time = input("Introduce la nueva fecha de modificación (YYYY-MM-DD HH:MM:SS): ")
+                    modify_time(file_path, new_time, 'LastWriteTime')
+                elif choice == '3':
+                    new_time = input("Introduce la nueva fecha de último acceso (YYYY-MM-DD HH:MM:SS): ")
+                    modify_time(file_path, new_time, 'LastAccessTime')
+                elif choice == '4':
+                    new_name = input("Introduce el nuevo nombre del archivo: ")
+                    modify_name(file_path, new_name)
+                    file_path = os.path.join(os.path.dirname(file_path), new_name)  # Actualiza la ruta del archivo
+                elif choice == '5':
+                    break
+                else:
+                    print("Opción no válida. Inténtalo de nuevo.")
+            except Exception as e:
+                print(f"Se produjo un error: {e}")
     else:
-        print("Modificación de metadatos no implementada para Linux en este script.")
+        while True:
+            print("\n¿Qué metadato deseas modificar?")
+            print("1. Fecha de modificación")
+            print("2. Fecha de último acceso")
+            print("3. Nombre del archivo (recuerda incluir la extensión)")
+            print("4. Salir")
+            choice = input("Selecciona una opción (1-4): ").strip()
+        
+            try:
+                if choice == '1':
+                    new_time = input("Introduce la nueva fecha de modificación (YYYY-MM-DD HH:MM:SS): ")
+                    modify_time_linux(file_path, new_time, 'modification')
+                elif choice == '2':
+                    new_time = input("Introduce la nueva fecha de último acceso (YYYY-MM-DD HH:MM:SS): ")
+                    modify_time_linux(file_path, new_time, 'access')
+                elif choice == '3':
+                    new_name = input("Introduce el nuevo nombre del archivo: ")
+                    modify_name(file_path, new_name)
+                    file_path = os.path.join(os.path.dirname(file_path), new_name)  # Actualiza la ruta del archivo
+                elif choice == '4':
+                    break
+                else:
+                    print("Opción no válida. Inténtalo de nuevo.")
+            except Exception as e:
+                print(f"Se produjo un error: {e}")
+
+                
+# Función para validar el formato de la fecha
+def is_valid_date(date_str):
+    try:
+        time.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+        return True
+    except ValueError:
+        return False
+
+    # Función para modificar una fecha específica del archivo en Linux
+def modify_time_linux(file_path, new_time, time_type):
+    if not is_valid_date(new_time):
+        print("Formato de fecha no válido. Inténtalo de nuevo.")
+        return
+
+    new_time_struct = time.strptime(new_time, "%Y-%m-%d %H:%M:%S")
+    new_time_epoch = int(time.mktime(new_time_struct))
+    formatted_time = time.strftime("%Y%m%d%H%M.%S", new_time_struct)
+
+    if time_type == 'modification':
+        subprocess.run(["touch", "-m", "-t", formatted_time, file_path])
+    elif time_type == 'access':
+        subprocess.run(["touch", "-a", "-t", formatted_time, file_path])
+    else:
+        print(f"Tipo de tiempo '{time_type}' no reconocido.")
+        return
+
+    print(f"Fecha de {time_type} modificada.")
+
 
 # Función para modificar una fecha específica del archivo en Windows
 def modify_time(file_path, new_time, time_type):
