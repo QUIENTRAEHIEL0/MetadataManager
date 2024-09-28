@@ -26,9 +26,9 @@ def show_metadata(file_path):
     print(f"Metadatos del archivo: {file_path}")
     if platform.system() == "Windows":
         # Obtener propiedades extendidas del archivo en Windows usando PowerShell
-        subprocess.run(["powershell", "-Command", f"Get-ItemProperty -Path '{file_path}' | Format-List"])
+        subprocess.run(["powershell", "-Command", f"Get-ItemProperty -Path '{file_path}' | Format-List"]) #Obtien los metadatos del archivo en windows
     else:
-        subprocess.run(["stat", file_path])
+        subprocess.run(["stat", file_path]) #Obtien los metadatos del archivo en linux
 
 # Función para validar el nombre del archivo
 def is_valid_name(name):
@@ -68,7 +68,7 @@ def modify_metadata(file_path):
                         print("Formato de fecha no válido. Inténtalo de nuevo.")
                 elif choice == '4':
                     new_name = input("Introduce el nuevo nombre del archivo: ")
-                    if is_valid_name(new_name):
+                    if is_valid_name(new_name): #Comprueba si el nombre es valido
                         modify_name(file_path, new_name)
                         file_path = os.path.join(os.path.dirname(file_path), new_name)  # Actualiza la ruta del archivo
                     else:
@@ -87,10 +87,10 @@ def modify_metadata(file_path):
             except Exception as e:
                 print(f"Se produjo un error: {e}")
                 
-# Función para modificar los metadatos del archivo en Linux                
+# Función para modificar los metadatos del archivo en Linux    ------------(por testear)------------
     else:
-        while True:
-            print("\n¿Qué metadato deseas modificar?")
+        while True: 
+            print("\n¿Qué metadato deseas modificar?") #NOTA --> No hay feha de creaccion en linux ya que no maneja este metadato
             print("1. Fecha de modificación")
             print("2. Fecha de último acceso")
             print("3. Nombre del archivo (recuerda incluir la extensión)")
@@ -113,7 +113,7 @@ def modify_metadata(file_path):
                         print("Formato de fecha no válido. Inténtalo de nuevo.")
                 elif choice == '3':
                     new_name = input("Introduce el nuevo nombre del archivo: ")
-                    if is_valid_name(new_name):
+                    if is_valid_name(new_name): #Comprueba si el nombre es valido
                         modify_name(file_path, new_name)
                         file_path = os.path.join(os.path.dirname(file_path), new_name)  # Actualiza la ruta del archivo
                     else:
