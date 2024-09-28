@@ -22,7 +22,7 @@ Puedes instalarlas usando `pip`:
 pip install Pillow exifread
 ```
 
-Clona este repositorio o descarga el script con
+Clona este repositorio o descarga el script con:
 
 ```sh
 git clone https://github.com/QUIENTRAEHIEL0/MetadataManager.git
