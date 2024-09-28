@@ -20,6 +20,10 @@ Puedes instalarlas usando `pip`:
 
 ```sh
 pip install Pillow exifread
+```
 
+Clona este repositorio o descarga el script
+```sh
 git clone https://github.com/tu-usuario/metadata-manager.git
-cd metadata-manager
+```
+
