@@ -23,7 +23,8 @@ pip install Pillow exifread
 ```
 
 Clona este repositorio o descarga el script
+
 ```sh
-git clone https://github.com/tu-usuario/metadata-manager.git
+git clone https://github.com/QUIENTRAEHIEL0/MetadataManager.git
 ```
 
