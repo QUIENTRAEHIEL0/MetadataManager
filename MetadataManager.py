@@ -79,7 +79,7 @@ def modify_metadata(file_path):
                     print("Recuerda modificar la fecha de ultimo adceso en el archivo para que se actualice la fecha de modificación")
                     exitShow = input("¿Estas seguro que deseas salir? (s/n): ").lower()
                     if exitShow == 's':
-                        print("Saliendo del programa ...")
+                        print("Saliendo...")
                         time.sleep(1)
                         break
                 else:
